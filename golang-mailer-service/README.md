@@ -124,3 +124,8 @@ go run server.go
 ```
 
 ### 5. Test gRPC service using Postman
+
+https://user-images.githubusercontent.com/26377913/209468175-d90887df-4cc9-4f75-8c01-f7a86083c0b1.mov
+
+
+
