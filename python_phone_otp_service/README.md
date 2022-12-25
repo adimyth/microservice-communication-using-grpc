@@ -48,6 +48,7 @@ message VerifyOTPRequest {
 
 message VerifyOTPResponse {
     bool success = 1;
+    string status = 2;
 }
 ```
 
@@ -67,6 +68,9 @@ python3 -m grpc_tools.protoc -I . --python_out=phone_otp --grpc_python_out=phone
 - `phoneotp_pb2::SendOTPRequest` - Request message for SendOTP method
 - `phoneotp_pb2::SendOTPResponse` - Response message for SendOTP method
 
+> **Note**
+> You will have to change line 5 in `phoneotp_pb2_grpc.py` from `import phoneotp_pb2 as phoneotp__pb2` to `import phone_otp.phoneotp_pb2 as phoneotp__pb2`
+
 ### 3. Creating the gRPC server
 
 Creating and running a gRPC server is very similar to creating and running a HTTP server. The only difference is that we need to create a gRPC server instead of a HTTP server.
@@ -77,3 +81,48 @@ Creating and running `PhoneOTP` server breaks down into 2 steps:
 - Creating and running a gRPC server to listen for requests from clients and transmit responses
 
 #### 3.1 Implement the `PhoneOTP` gRPC service
+
+```python
+from concurrent import futures
+import grpc  # type: ignore
+from utils import TwilioService
+import phone_otp.phoneotp_pb2 as phoneotp_pb2  # type: ignore
+import phone_otp.phoneotp_pb2_grpc as phoneotp_pb2_grpc  # type: ignore
+
+
+class PhoneOTPService(phoneotp_pb2_grpc.PhoneOTPServiceServicer):
+    def __init__(self):
+        # a helper class to send and verify OTPs
+        self.twilio_service = TwilioService()
+
+    def SendOTP(self, request, context):
+        message_id = self.twilio_service.send_otp_to_phone(request.phone_number)
+        if message_id is None:
+            return phoneotp_pb2.SendOTPResponse(success=False)
+        print(f"OTP sent to phone number: {request.phone_number}")
+        return phoneotp_pb2.SendOTPResponse(success=True)
+
+    def VerifyOTP(self, request, context):
+        verified, status = self.twilio_service.verify_otp(request.phone_number, request.otp)
+        return phoneotp_pb2.VerifyOTPResponse(success=verified, status=status)
+
+
+def serve():
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    phoneotp_pb2_grpc.add_PhoneOTPServiceServicer_to_server(PhoneOTPService(), server)
+    server.add_insecure_port("[::]:50051")
+    server.start()
+    server.wait_for_termination()
+
+
+if __name__ == "__main__":
+    serve()
+```
+
+#### 3.2 Run the server
+
+```bash
+python3 server.py
+```
+
+### 4. Interacting with the gRPC server using Postman (as a gRPC client)
