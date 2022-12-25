@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option go_package = "./";
+
+package mailer;
+
+// service is a collection of RPC methods.
+// RPC methods accept a single request message and return a single response message.
+service MailerService {
+    rpc SendMails (SendMailRequest) returns (SendMailResponse) {}
+}
+
+// protobuf data is structured as messages. message is a small logical record of information containing a series of name-value pairs called fields.
+message SendMailRequest {
+    string receiver = 1;
+    string subject = 2;
+    string body = 3;
+}
+
+message SendMailResponse {
+    bool success = 1;
+}
