@@ -127,5 +127,44 @@ go run server.go
 
 https://user-images.githubusercontent.com/26377913/209468175-d90887df-4cc9-4f75-8c01-f7a86083c0b1.mov
 
+### 6. gRPC client
 
+```go
+package main
 
+import (
+	"context"
+	"log"
+
+	"github.com/adimyth/microservice-communication-using-grpc/golang-mailer-service/sendgrid-mailer"
+	"google.golang.org/grpc"
+)
+
+func main() {
+	// Create a connection to the gRPC server using the grpc.Dial function.
+	conn, err := grpc.Dial("localhost:50052", grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("failed to dial: %v", err)
+	}
+	defer conn.Close()
+
+	// Create a client for the MailerService service
+	client := sendgrid_mailer.NewMailerServiceClient(conn)
+
+	// Set the request parameters
+	request := &sendgrid_mailer.SendMailRequest{
+		ReceiverEmail: "aditya@fnp.dev",
+		ReceiverName:  "adimyth",
+		Subject:       "Hello from gRPC",
+		Body:          "This is a message from the gRPC client",
+	}
+
+	// Use the SendMails method of the MailerService client to send an email to the specified receiver with the given subject and body.
+
+	response, err := client.SendMails(context.Background(), request)
+	if err != nil {
+		log.Fatalf("failed to send email: %v", err)
+	}
+	log.Printf("email sent: %v", response.Success)
+}
+```
