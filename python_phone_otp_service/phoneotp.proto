@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package phoneotp;
+
+// service is a collection of RPC methods. 
+// RPC methods accept a single request message and return a single response message.
+service PhoneOTPService {
+    rpc SendOTP (SendOTPRequest) returns (SendOTPResponse) {}
+    rpc VerifyOTP (VerifyOTPRequest) returns (VerifyOTPResponse) {}
+}
+
+// protobuf data is structured as messages. message is a small logical record of information containing a series of name-value pairs called fields. 
+message SendOTPRequest {
+    string phone_number = 1;
+}
+
+message SendOTPResponse {
+    bool success = 1;
+}
+
+message VerifyOTPRequest {
+    string phone_number = 1;
+    string otp = 2;
+}
+
+message VerifyOTPResponse {
+    bool success = 1;
+    string status = 2;
+}
