@@ -1,3 +1,5 @@
+## Managing Python dependencies
+
 ### Create virutal environment
 
 ```bash
@@ -15,6 +17,13 @@ pip3 install -r requirements.txt
 ```
 
 ## Phone OTP Service
+
+We will be using [Twilio](https://www.twilio.com/) to send and verify OTPs. You will need to create a Twilio account and get the following credentials:
+
+- `TWILIO_ACCOUNT_SID`
+- `TWILIO_AUTH_TOKEN`
+- `TWILIO_PHONE_NUMBER`
+- `TWILIO_VERIFICATION_SERVICE_SID`
 
 ### 1. Define the gRPC service
 
@@ -122,6 +131,13 @@ if __name__ == "__main__":
 #### 3.2 Run the server
 
 ```bash
+# copy the .env.example file to .env and update the values
+cp .env.example .env
+
+# activate the virtual environment
+source .venv/bin/activate
+
+# run the server
 python3 server.py
 ```
 
