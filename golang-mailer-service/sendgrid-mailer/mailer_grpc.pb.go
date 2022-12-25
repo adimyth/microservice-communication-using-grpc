@@ -4,7 +4,7 @@
 // - protoc             v3.21.8
 // source: mailer.proto
 
-package __
+package sendgrid_mailer
 
 import (
 	context "context"

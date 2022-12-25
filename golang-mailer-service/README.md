@@ -66,9 +66,7 @@ message SendMailResponse {
 ### 2. Generate gRPC code
 
 ```bash
-mkdir mailer
-
-protoc --go_out=mailer --go-grpc_out=mailer mailer.proto
+protoc --go_out=. --go-grpc_out=. mailer.proto
 ```
 
 ### 3. Implement gRPC service
@@ -124,3 +122,5 @@ func main() {
 ```bash
 go run server.go
 ```
+
+### 5. Test gRPC service using Postman
