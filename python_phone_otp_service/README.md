@@ -126,3 +126,8 @@ python3 server.py
 ```
 
 ### 4. Interacting with the gRPC server using Postman (as a gRPC client)
+
+https://user-images.githubusercontent.com/26377913/209463377-796a7c7a-c7a3-4ee5-87b2-3c4ccc99c7d9.mov
+
+
+
