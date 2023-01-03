@@ -21,10 +21,19 @@ func main() {
 
 	// Set the request parameters
 	request := &sendgrid_mailer.SendMailRequest{
-		ReceiverEmail: "aditya@fnp.dev",
-		ReceiverName:  "adimyth",
+		ReceiverEmail: "RECEIVER_EMAIL",
+		ReceiverName:  "RECEIVER_NAME",
 		Subject:       "Hello from gRPC",
-		Body:          "This is a message from the gRPC client",
+		Body: `
+		This is a message from the gRPC client.
+
+		You can check out my project here - https://github.com/adimyth/microservice-communication-using-grpc
+		
+        Thanks for your time! Let me know if you have any questions.
+
+        Best,
+        Aditya
+		`,
 	}
 
 	// Send the email

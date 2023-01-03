@@ -128,7 +128,14 @@ if __name__ == "__main__":
     serve()
 ```
 
-#### 3.2 Run the server
+The context object in Python is implemented as a thread-local variable and has the following properties:
+
+- `deadline`: The deadline for the RPC call. If the RPC call takes longer than the deadline, the call will be cancelled and the client will receive a DEADLINE_EXCEEDED error.
+- `cancelled`: A boolean value that indicates whether the RPC call has been cancelled. If the value is True, it means that the RPC call has been cancelled by the client or the server.
+- `details()`: A function that returns the details of the error that caused the RPC call to be cancelled, if any.
+- `add_callback(callback)`: A function that adds a callback to the context. The callback will be called when the context is cancelled or the deadline is exceeded.
+
+#### 3.2 Run the gRPC server
 
 ```bash
 # copy the .env.example file to .env and update the values
@@ -141,6 +148,28 @@ source .venv/bin/activate
 python3 server.py
 ```
 
-### 4. Interacting with the gRPC server using Postman (as a gRPC client)
+### 4. gRPC Client (Postman)
 
 https://user-images.githubusercontent.com/26377913/209463377-796a7c7a-c7a3-4ee5-87b2-3c4ccc99c7d9.mov
+
+### 5. gRPC Client (Python)
+
+```python
+import grpc
+
+import phone_otp.phoneotp_pb2 as phoneotp_pb2
+import phone_otp.phoneotp_pb2_grpc as phoneotp_pb2_grpc
+
+def main():
+    # Create a connection to the gRPC server
+    with grpc.insecure_channel("localhost:50051") as channel:
+
+        # Create a client for the PhoneOTPService service
+        stub = phoneotp_pb2_grpc.PhoneOTPServiceStub(channel)
+
+        # send an otp to a phone number
+        response = stub.SendOTP(phoneotp_pb2.SendOTPRequest(phone_number="9029080380"))
+        print(f"SendOTP response: {response}")
+
+```
+

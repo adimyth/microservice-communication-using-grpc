@@ -1,8 +1,10 @@
 from concurrent import futures
+
 import grpc  # type: ignore
-from utils import TwilioService
+
 import phone_otp.phoneotp_pb2 as phoneotp_pb2  # type: ignore
 import phone_otp.phoneotp_pb2_grpc as phoneotp_pb2_grpc  # type: ignore
+from utils import TwilioService
 
 
 class PhoneOTPService(phoneotp_pb2_grpc.PhoneOTPServiceServicer):
@@ -17,7 +19,9 @@ class PhoneOTPService(phoneotp_pb2_grpc.PhoneOTPServiceServicer):
         return phoneotp_pb2.SendOTPResponse(success=True)
 
     def VerifyOTP(self, request, context):
-        verified, status = self.twilio_service.verify_otp(request.phone_number, request.otp)
+        verified, status = self.twilio_service.verify_otp(
+            request.phone_number, request.otp
+        )
         return phoneotp_pb2.VerifyOTPResponse(success=verified, status=status)
 
 
