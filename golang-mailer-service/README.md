@@ -224,3 +224,25 @@ func main() {
    # Print the response
    print(f"Response received: {response.success}")
    ```
+
+### 7. Structure
+
+```bash
+.
+├── README.md
+├── client-stubs -- contains client codes
+│   ├── sendgrid-mailer -- golang client code to consume the mailer service
+│   │   └── mailer-client.go
+│   └── sendgrid-mailer-python -- python client code to consume the mailer service
+│       └── mailer-client.py
+├── go.mod
+├── go.sum
+├── mailer.proto -- gRPC service definition
+├── sendgrid-mailer -- contains generated gRPC client and server code for golang
+│   ├── mailer.pb.go
+│   └── mailer_grpc.pb.go
+├── sendgrid_mailer_python -- contains generated gRPC client and server code for python
+│   ├── mailer_pb2.py
+│   └── mailer_pb2_grpc.py
+└── server.go -- gRPC server code
+```
