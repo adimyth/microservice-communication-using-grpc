@@ -10,12 +10,6 @@ cd golang-microservice
 go mod init github.com/adimyth/microservice-communication-using-grpc/golang-microservice
 ```
 
-### Install Protocol Buffers
-
-```bash
-go get -u github.com/golang/protobuf/protoc-gen-go
-```
-
 ### Install gRPC
 
 ```bash
@@ -31,7 +25,7 @@ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 export PATH="$PATH:$(go env GOPATH)/bin"
 ```
 
-### Install dependencies
+### Install package dependencies
 
 ```bash
 go get github.com/joho/godotenv
